@@ -1,0 +1,174 @@
+[SOUND]
+Okay, so I'm in my editor and
+I'm located in the Lecture19 folder, which is in
+the fullstack-course5/examples folder. And what we're going to do here
+is I've pre-written some code and we're going to start going through
+this code chunk by chunk and I'll explain to you
+what's going on as we go. The first piece is right here as
+we're declaring a parent object, so it's a simple object
+literal declaration. It has a value property which
+is equal to parentValue, an object property which itself
+has a property called objValue, object value, and
+it's equal to parentObjValue. And it has a walk method or
+function that basically just, if you invoke it, will log
+the walking string to the console. Next, let's go ahead and create a child object that is going
+to be based on our parent object. That is, the child object will
+have prototypal inheritance from the parent object. And the way to do that is to
+call Object.create passing it the object you want to
+base your new object on. Object.create is something that should
+be supported by all the modern browsers. So after line 12, our parent object is
+now the prototype for our child object. And what we're going to do now is we're
+just going to go ahead and console.log some of the things that we see inside
+the child object, and the parent object. So the first one is we're going
+to go ahead and say child.value. Now this value really comes from the
+parent object and what's going to happen is that JavaScript engine will go
+ahead and go up the prototype chain. And look up this value inside
+the prototype of the child object, which is the parent and
+should print out parentValue. Then we're going to do something
+similar except this time, we're going to say child.obj.objValue
+which means we're going to once again go up the prototype chain. And look up the obj which is
+just a property on the parent prototype object again, and
+look up each objValue property. Now just to compare, we're going to go
+ahead and access the parent properties directly as well, and
+say parent.value and parent.obj.objValue. And then just for good measure,
+we'll go ahead and log both objects, the parent and the child. Since I have my browser
+sync already working and it's actually pointed to prototype.html
+which is just a simple HTML file that references prototype.js,
+which is what we're writing here. So once we're saved, and
+we go back to the browser. We could see that the child.value
+is parentValue, and that's because the JavaScript
+engine went up the prototype chain to look up this value
+in the parent object. And child.obj.objValue is yet
+again parentObjValue for the same reason. You could also see that the parentValue,
+parent.value and parent.obj.objValue are also exactly the same as
+the ones that we got from the child. Now let's take a look at
+the objects themselves. Well, here is the parent object and
+as we expect, it's got the parentValue. And if we open it up, it's got the value, the walk function, which if you hover
+you'll see that's just console.log. And it's got that obj property
+which serves as an object, which obviously has
+the objValue parentObjValue. Now, if we close that, and
+look at our child object, you could see that it doesn't really
+have any properties of its own. But if we open it up, you'll see that
+it has one special property called __proto__ and it's a special property
+you shouldn't be accessing directly for performance reasons. But that is where the JavaScript engine,
+in its kind of behind the scenes holds a reference to the parent
+prototype of the child object. So if you open that up,
+you'll see that it looks very familiar. It's got the obj property,
+the value property, and the walk property, which is a function. So you can see that we're still
+referencing our parent object using this __proto__ property. Let's go back to the code editor and we'll uncomment the next chunk of code,
+which is the one right here. And what we're going to do now is,
+we're actually going to declare our own value property on the child object and
+we'll call it childValue. And we'll also say child.obj.objValue and
+change the value to childObjValue. Now what should happen here is since we're
+declaring a value property on the child, when we reference it
+later in the console.log, the JavaScript engine will not
+access the parent's value property. But it will access the child's
+value property because the child's value property Is
+masking the parent value property. However, since this obj property is still
+not a property of the child object. But it's still requiring
+the JavaScript engine to walk up the prototype
+chain in order to look it up. This obj value will
+actually get changed and changed to the string child objValue
+on the parent object itself. So what we're going to do is we're
+going to declare that we changed stuff. I'm going to actually just copy and paste these lines of code
+right in the console.log, so we could see what we're changing
+in our console in the browser. And then we'll again, go ahead and log
+the child, child.value, child.objValue and we'll log parent.value, and
+we'll log parent.obj.objValue. And if everything works right,
+the parent.obj.objValue should be equal at this point to whatever
+comes out from child.obj.objValue. They should really point to
+the same object, and then for good measure we will go ahead and output
+the parent object and the child object. Let's go ahead and save that,
+go to our browser. And we could see after we changed things,
+we changed the child value to childValue and now this value is masking
+our prototype's parentValue property. So if we go to the child, we'll see it
+will indeed say childValue as we set it, and if we go to the parent. You could see that the parent did
+not get changed simply because we are masking the value now in the child. And we're not affecting the parentValue
+when we're setting it right here to this string childValue. However, since when we access or
+set the objValue, which is itself a property
+of the obj property. That obj property requires the JavaScript
+engine to walk up the prototype chain and look it up on the parent object. And therefore, when we change it, this string will now get recorded in
+the parent.obj.objValue directly. And now, if you look at our objects
+that we actually output to the console, you'll see that our child object now
+has its own value called childValue. And if we open it up, you'll see it
+doesn't need to have a childValue, and its __proto__ or
+prototype is still pointing to the parent. And the parent has a value, but
+its value is still saying parentValue. Again, that's because the value got masked by the child property
+that is of the same name. Let's go back to the code editor and
+actually verify that the child, let's uncomment this slide right here, and verify that the child obj is
+actually equal to the parent obj. Meaning that when we resolve
+the .obj on the child, the JavaScript engine actually
+walks up the prototype chain. And it is the exact same instance of the
+object that is attached to the parent one. So we'll go ahead and say if one equals
+the other it should output true, we'll save this,
+we'll go back to the browser and indeed, child.obj is actually
+equal to the parent.obj. Okay, so let's go back to
+the code editor once again and let's see here that we don't have
+to get stuck on just one child. We could create a grandchild of the parent
+and the way we could do that is yet again, call Object.create except this time
+our prototype will be the child. Which means the grandchild is create based
+on the prototype of the child object, and the child object is still an object
+that was based on the parent object. So therefore, the grandchild and you can
+tell that this is still working just fine, because we can first of all
+output it to the console and see what that object holds. And certainly, we can call
+grandChild.walk, which is something that is not even coming from the child object
+but coming all the way from the parent. Let's go ahead and save that,
+let's go back to our browser console and you see here that the Grandchild
+object is an empty one. But if we open it up you
+see we have a prototype. Open that up, that prototype, which is
+our child object has its own child value, or the value property with
+child value as the string. But it also has a prototype as well,
+if we open that up, you'll see our familiar parent
+object with its walk method. And sure enough, when we call
+Grandchild.walk, it will print out walking, because this function is
+console logging the walking!string. So that's prototypal inheritance and
+it's really very simple. It's either the JavaScript engine will
+look for a property by walking up its prototype chain and looking on its parent
+objects for that particular property. Or if the object already has that
+property, that property is really masking the prototype's property, and
+therefore get resolved immediately. So as you've seen there's a bit of
+a contrast here between a primitive value like a string that gets inherited
+through the prototypal inheritance. And the property that
+is itself an object and gets inherited through
+the prototypal inheritance. The obvious difference here is that
+changing the values of the properties of the inherited object does not match those
+properties from the parent prototype. Let's go back to the code editor and
+see one more very important concept before we jump into the controller
+as syntax explanation. In fact, let's go ahead and comment this
+whole thing out so you can have it for reference. And what we'll comment out is
+this particular piece right here, function constructors. Now if you don't know anything
+about function constructors at all, I highly suggest that you look into
+my other course called HTML, CSS, and JavaScript for Web Developers. In particular, lecture 48, that
+explains all this in much more detail. However, here, we'll just quickly review,
+since functions, at the end of the day,
+are just objects themselves. You can create new objects and treat them
+sort of like classes using functions and you can use the functions as
+a constructor for that object. In this case, we have a function called
+dog and it takes an argument called name. And we are able to say this.name equals the name that whatever the name
+that is being passed in. And inside of this function,
+we're going to go ahead and log the this keyword to see what it actually
+points to and what's inside of it. Now in order to create the object
+using a function constructor, you need to actually give it the new
+keyword before you invoke the function. So the invocation of the function is not
+the regular invocation of where you just give it the name, put parens behind it,
+pass in some arguments. But you actually need to put
+the keyword new in front of it. When you do that, when you log myDog, you
+will see that this will be the Dog object, which will have a Max as
+the name property on that object. Now if you make a mistake and try to invoke the function constructor
+simply without the new keyword. The this keyword inside of the function
+constructor will no longer point to the function constructor object or
+the dog object in this case. But it will point to the outer scope, and
+in this case the outer scope is the global scope and the global scope in a browser
+is nothing more than the window. So let's go ahead and save that,
+and go back to our browser and you'll see that this is
+pointing to the dog. The dog is actually the name
+of our object and again, my dog is exactly the same thing. And in the second case, where if we go
+back to the code, where we actually invoked the function constructor
+directly without the new keyword. You'll see that inside of that
+function constructor that this keyword resolved to the Window object and
+not to the Dog object that we expected. One quick tip, is that when the functions
+start with a capital letter, that's just a little reminder that this is
+not a regular function to be used as any other function, but
+is actually a function constructor. In part three of this lecture, we'll look
+at some AngularJS specific concepts that are built on top of the concepts
+that we just learned.

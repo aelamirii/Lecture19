@@ -1,0 +1,61 @@
+[MUSIC] Up until now, we've been using a simple
+controller declaration inside of our HTML. We use something like ng-controller
+equals some name of the controller that we declared in our angular module. But there's a better syntax to follow and
+that is controller as syntax. And we will be building up
+to that in this lecture. However, to truly appreciate what
+Controller as syntax is accomplishing for us, we need to first understand
+a pretty fundamental concept in JavaScript in general. And that is prototypal inheritance. Without understanding this
+basic concept in JavaScript we would simply be
+memorizing strange rules instead of understanding why things work
+the way they do, we don't want to do that. So, in part one of this lecture we will
+delve into Prototypal Inheritance and see how it works. >> The first question is,
+what is inheritance in general? Well, inheritance is when an object or a
+class is based on another object or class, the parent object, using the same
+implementation and/or the same values. So for example if you have an Animal
+object or class, it might have some properties like numberOfLegs,
+it might have a method called walk(). You can then have another class or object called Dog, that inherits
+from the Animal class or object. One way or another,
+the dog object or the dog class has access to the numberOfLegs
+property and also to the walk method. Different languages have different types
+of inheritance that they implement. But in general, this technique is used for code reuse as well as
+logical entity structure. Now note here that I'm not trying to be
+super accurate with my terminology and differentiate between subtyping and
+inheritance is a relationship, etcetera. For our purposes, these definitions
+will suffice without throwing more theoretical complexity into the mix. So that's inheritance. Unlike object oriented inheritance,
+which is based on classes and is much more complex and has a lot of
+rules that you have to memorize and has different intricacies,
+prototypal inheritance is based on object instances and
+is very simple and straightforward. The original object instance
+becomes the prototype for all subsequently created objects. In this example we have an object called
+parent and it has a type property that is equal to the string parent and
+a method with the name method. Then, if we create a child object that is
+going to be based on our parent object, that child object will start off
+with being simply an empty object. However, if we try to value an expression,
+child.type, the JavaScript engine will look into the child object and
+look to see if it has the type property. In this case, it doesn't,
+so what it will do, the JavaScript engine will then
+look to the prototype chain to see which object is actually
+the parent of this child object. And in this case,
+it's the parent object itself. And we'll ask that parent object,
+whether or not there's a type property
+that belongs to it. In this case, there is one, and it evaluates to the parent string,
+so therefore it will get resolve, the type property will get
+resolve to the parent object. Which means child.type expression will
+then get resolved to the string parent. Now, the reason it's called the prototype
+chain is because it doesn't have to be limited to just one object
+in its subsequent child. It can have grandchildren,
+great-grandchildren, and so on and so forth. In other words you could create yet another object that is based on
+the child object and therefore the current parent will then become the
+grandparent of that newly created object. However what will happen if
+instead of evaluating child.type expression we set a type
+property on the child object? What will happen is that the child
+object will no longer be empty. It will actually have
+a property called type that will evaluate to the string child. What will then happen if you try to
+evaluate child.type in this case? What will happen is that since
+the child.type property actually masks the type that is inherited
+from the prototype of this object, which is the type property
+of the parent object, this will get evaluated and
+resolved immediately. Which means it will not go looking up
+the prototype chain to the parent object. Therefore, in this case
+child.type expression will get evaluated to the string child. In part two of this lecture we
+are going to jump into the code editor and see how these concepts work in action.

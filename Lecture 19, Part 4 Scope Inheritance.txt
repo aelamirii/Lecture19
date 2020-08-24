@@ -1,0 +1,134 @@
+[MUSIC] So I'm back in my Atom code editor and
+I'm located in lecture 19, which is located in
+fullstack-course5/examples folder. And here I've setup a simple
+app called ControllerAsApp. And what it has here actually
+has a couple of things. First thing we're going to look at,
+is we're going to use the controller as we usually used it without
+the controller as syntax. But we'll play around with the prototype
+inheritance between the nested controllers. And then at the end,
+we're going to go ahead and take a look at the controller
+as syntax that we discussed. So the first thing is,
+we have a couple controllers here. One is the parent controller,
+called ParentController1, and the other one is child controller,
+called ChildController1. And the child controller, as you can see,
+is nested inside of the ParentController1. Let's go ahead and take a look at app.js. And app.js just declares
+our application and then it declares our four controllers and
+the last two ParentController2 and ChildController2, we're
+not going to use just yet. So these two, you can ignore for now. But meanwhile we have
+the ParentController1 and the ChildController1. The ParentController1
+sets up a few values. Number one, it sets up a parent
+value property equal to 1, which means it's a primitive type value. And then it sets up a PC property,
+standing for parent controller, that is equal to this, meaning this is
+the actual parent controller one instance. Now the reason this is going to point
+to the ParentController1 instance is because we call the angular duct
+controller method, the function value that is passed to it as the controller function
+is treated as a function constructor. So therefore, at some point,
+there's going to be a new and it's going to new up the subject, and
+when we use a new in front of a function it becomes a function constructor and
+therefore this, the keyword this is going to point to the instance
+of ParentController1 in this case. So here we have the $scope.pc, that's
+another attribute on the scope service. And were going to equal it to this. But were not going to stop there. Were also going to attach a parent value
+to the actual PC, which is our controller. So, the controller instance is actually
+going to have a parent value property and were also going to equal it to 1. Now the ChildController is not going
+to declare anything on its own. Instead, we're just going to use
+the $scope which is declared on the ChildController itself and
+ask it for the parent value. Now, it doesn't really have
+a parent value of its own, which means it's going to try to look up
+the parent value up the prototype chain, and should give us number one here, the
+primitive value one, since the prototype for the scope of ChildController1 is
+the scope of the ParentController1. And to begin with, we just go ahead and
+dump the scope to the console so we could see what's sitting inside the
+scope and we could see if could perhaps traverse the prototype chain ourselves
+in the Chrome developer tools. So, point is the first
+thing we should see so the logging statements are only
+coming from the child controller. So there are no logging statements in a
+parent controller and the child controller is going to try to say my
+scope.parentValue, what is that equal to. And then it's going to dump
+the actual scope to the console, the scope of the child controller. So let's save that and let's go to
+the browser and let's take a look. So, scope.parentvalue is one. And this 1 is clearly coming from
+the parent controller, since we, as a child controller, don't even
+have a parent value property at all. We'll take a look at the $scope object
+that we printed to the console. Let's open it up a little bit. And we could see that we don't
+really have any kind of values here, we certainly don't have
+the parentValue property. But we do see the __proto__. And if we open that up, that's supposed to
+be the prototype for our ChildController. And you could see that it has
+the parentValue attribute, which is equal to 1, which is what we
+retrieved in our child controller. You can also see that it has the PC attribute that is pointing
+to the ParentController1, which is the instance of
+actually our parent controller. And if we open it up,
+actually you could see that it also has a parentValue property on it,
+also equal to 1. So now we understand and kind of ourselves
+traversed the prototype chain to see where the parentValue on this scope
+service came from In our child controller. Let's go back to the code editor and then comment some more
+statements that I prepared here. Let's uncomment this piece, and what we're doing here now is on the child
+scope, we're setting a parentValue. Since we created an identical
+property name on our child scope, it means it will start masking that
+property name from our prototype, which is our ParentController1. So the next line here, all we're doing
+here is just console logging the fact that we're changing or actually adding the
+parentValue property to our child scope. And what we're going to do is we're
+going to go ahead and print out or log the scope,
+again the child scopes, parent value. And that should be
+the new value right here. But what we're going to do again
+is we're going to go ahead and log the scope object and see if we can again traverse the prototype
+chain to see if the prototype's value, the parent value has changed because
+of us changing this value right here. So lets save that and go to the browser. And we could see here,
+we changed the value to 5. So now scope.parentValue is 5 because this parentValue is now belonging
+to the child controller. The scope and the child controller. So if we open up our child controller
+scope, we'll see that we should have now a parentValue that is sitting
+directly on the child controller. And if we go ahead and look at
+the prototype of our child controller, and scroll down here,
+you'll see that the parentValue that we used before is still 1 and
+the reason for that is, is because our child controller scope
+is masking the parent value property. So the JavaScript engine is
+not going up to prototype chain to look up the parentValue. Let's go back to the code editor and
+see a couple of more things here. What we're going to do now is we're
+going to start messing with the actual ParentController object that we
+declared on the ParentController scope. So let's uncomment this
+chunk of code right here. And now, we would want to retrieve
+the parent controller object, which as you can remember, is actually pointing to the
+instance of the parent controller itself. So we're kind of mimicking the whole
+idea of controlling our syntax but we're doing it all by ourselves
+without the AngularJS help. So what we're doing here is,
+we're traversing the prototype chain and looking up the PC,
+the parent controller object. And we're retrieving the parentValue
+property of that PC object. And here it is were just
+console logging it. After, we're going to go ahead and
+change that value. And remember, since in order for us to even get to this object,
+we need to right here in this dot, we need to actually traverse
+the prototype chain to our parent object. It means that when we change
+the property parentValue, it will actually change not only
+here in the child scope, but it will actually change at its root,
+at its ParentController1. And all we're going to do is basically log
+the fact that we're about to change that. We'll print the value back out,
+which at this point should be 5. And then we'll dump the scope again onto
+the console to see if we could again manually traverse the prototype chain to
+see if we see what the differences were. Let's go ahead and save that. Let's go to our browser and
+you can see here, what we're doing here, is we're saying
+the scope.pc.parentValue is 1. After we change that, the scope,
+there are child scope that PC, parent controller, parentValue is now 5. So if everything went according to how we
+understood it, there should not be any extra properties on the child scope,
+and the parent, the prototype of our child scope, should still contain
+the PC object, and that object should contain the parentValue property with
+the new value 5 that we updated. Let's go ahead and open that up. If we take a look, our parentValue is 5. That's again the local parentValue
+of the local child scope. If we look at the prototype, we'll see that the pc is still pointing
+obviously to the ParentController1. If we open that up,
+you'll see that the parentValue here is 5. So we did update it in the same location
+as the actual prototype object. As the side note, if you take a look
+here and we'll close this up for a second, let's open a backup. You'll see that not only do
+we have a prototype__proto__, but we also have this $parent object. Well I told you before, that is best
+practice to access the ___proto__ because it's kind of an internal
+JavaScript object. However, AngularJS exposed at least,
+if not all of it but certainly part of it,
+of that object to us as a $parent. And that is not an object
+that you should avoid. You could actually use
+that if you wanted to. So for example,
+I could go back to my code editor. I can actually traverse that object and
+let's say I could log and say I want to log
+$scope.$parent.parentValue And if I save that, and
+we go back to our browser, you'll see that
+the $scope.$parent.parentValue is 1. And that is being
+retrieved from the parent, meaning going up the prototype chain and retrieving it from the parent, which is
+the ParentController1, $scope object. In the final part of this lecture,
+part five, we'll continue our example. But this time, we'll explore using the
+Controller As Syntax as well as go through a quick summary of concepts that
+we've learned in this lecture.

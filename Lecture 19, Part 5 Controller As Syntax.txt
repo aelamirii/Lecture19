@@ -1,0 +1,109 @@
+[SOUND] In Part 4 of this lecture, we explored a coding example that should how
+the $scope inheritance works in angular. If this lecture we'll continue
+with that coding example but now use the Controller As Syntax. Okay, so let's go back the code editor and
+actually what we'll do, not to convolute our logging statement, so let's
+go ahead and comment this whole thing out. And what we'll do this time is
+we'll go to our index.html and we'll uncomment the couple of
+controllers that we have here. So what we do here is we have
+a couple of controllers. One is a controller called
+ParentController2, and in this time we're using the Controller A
+Syntax in giving that controller a label. And we'll call it parent,
+we can call it whatever we want. And then if you look down here,
+we have another ng-controller, which is ChildController2 and
+we're giving you the label of child. So since any properties,
+they're going to be edit now to the scope. I'm not going to be added directly
+to the dollar sign scope but going too be added to the $scope.parent
+property or .parent object and since we know that we don't need
+to actually mention $scope, that property that is sitting on
+the $scope which is the parent property could now be be referenced
+directly in our HTML template. So we can say parent.value
+assuming there's a value property on that parent object. And we could also say here child.value. Let's go to add.gs and take a look as
+to what our controllers look like. So first of all here,
+we have our ParentController2 and it's kind of a best practice to name the
+this variable that we're going to kind of attach all kinds of property to, the same
+as the label inside your HTML template. You don't have to do it, some people
+actually name it VM for View Model. But, I like to keep it at the same name
+as the label I gave in the html template. But what you name it here makes absolutely
+no difference because this is just a local variable, and you're just using it
+instead of having to say this everywhere. Some people say this everywhere but
+this is a little bit more clear to read. So what I'm doing here is
+I'm saying parent.value=1. Which means I'm assigning
+a property called value to the instance of this ParentController2. Note that even though I have
+the scope here injected, I really don't need it here and it's
+probably actually left over here because I was doing console.log statements. But since I have no console.log statements
+that in the ParentController2 that I want to log the $scope to the console, I'm just
+going to write take it out all together. We don't really need it
+because the scope is provided, we're just not using it anywhere
+because we're attaching the properties directly to the instance
+of the controller itself. And it's AngularJS that it's taking
+the instances in this controller and assigning it to the $scope for
+us behind the scene. Now let's take a look at
+the ChildController2 and the only reason again I'm injecting
+scope here is because this time I'm actually going to log the scope so
+we could just look at it. But really I really don't need
+it here at all unless I'm specifically using it for something. And here the construct
+is exactly the same. We're declaring a local variable that
+is the same name as the label that we declared our controller
+with an HTML template, and we're creating a property on
+that object called value, which is exactly the same name
+as the property of the parent. However, since we're assigning it to the
+instance of the controller in both cases, this value in no way is
+going to mask this value. Which means as long we reference
+the proper controller, these values can work independently. And all we're doing here is
+we're going to go ahead and dump the scope object to the console so
+we can take a look. Let's save that for a second and let's go back to the
+index.html and see what we're doing here. As you could see it is much easier to
+read as to what's going here as well. Since parent is being assigned as
+a property on our $scope by AngularJS, I can now reference parent.value and
+reference child.value here as well. Let's go ahead and save that and
+go to the browser. And you could see that the parent value
+here is 1 as we expected it to be. The child value of the child
+inner controller is 5. Now let's go ahead and
+take a look at the child's scope object. If we open it up a little bit here,
+we could see that we have a child property that is equal to
+the ChildController2 instance. And we could see here if we open
+it up that it's value equal to 5. Now if we go ahead and
+traverse its prototype chain, right here, we'll see that its prototype
+has a parent property. And that parent property is equal
+to ParentController2 instance, and we could see here that its value is 1. So if we go back to the code editor,
+you'll see how much easier it is now to even reference properties of our parent
+controller in our inner child controller. So for example,
+I can say here parent value and I can reference now the parent controller
+since parent is something that got inherited as part of the prototype
+chain so parent.value. And if we do this and go back to our browser,
+you'll see that the parent value is 1. And it's the same parent value
+that we retrieved right here, even though this parent value is being
+mentioned inside of our child controller. So this way it's much easier to read. You see here that we are actually
+referencing some property that belongs to this
+particular controller. So it's easier to read,
+easier to debug and you could see where these
+properties are coming from. So let's summarize. First of all, please don't think that all
+these numerous concepts that we learnt as part of this lecture are only applicable
+to understanding the Controller As Syntax. What we learned is applicable
+throughout AngularJS framework, and really throughout JavaScript in general. So let's review. Inheritance, in general,
+is used for code reuse, and sometimes to express
+a relationship between entities. Prototypal inheritance in JavaScript, is based on object instances,
+rather than classes. In general, prototypal inheritance is much
+simpler than a class based inheritance having only a couple of rules to note. First the child's objects properties are
+inherited from the parent and are looked up the prototype chain so they're actually
+not sitting directly on the child. Second, the property can be local if
+it's declared on the child object itself with the same name as the parent,
+therefore masking the parent's property. Now, when it comes to AngularJS, the
+$scope is based on prototypal inheritance. Which means that a child
+controller's $scope inherits from the parent controller's $scope. So if you have two nested controllers,
+the inner controller's scope is prototypically inherited
+from the outer controller's scope. Now when it comes to controller As syntax,
+it's very simple. It's the ControllerName
+ng-controller=ControllerName As and you give it a specific label. Angular then creates a property
+with that same label name on the $scope that belongs
+to that controller. The label name becomes a reference
+to this keyword, in other words, the instance of the controller function. Now the reason that works is
+because when we call .controller to declare our controller in AngluarJS the .controller treats our controller
+function as function constructor. So, when you start declaring properties
+that you want to share between your View Model, the controller and the HTML template, you attach them
+directly to the controller instance, in other words you attach them to
+the 'this' keyword, not the $scope. With the Controller As syntax, the syntax
+in the HTML templates as well as our JavaScript code
+becomes much simpler and we no longer have to deal with
+the masking that can occur with the prototypal inheritance making
+the code much simpler to write.

@@ -1,0 +1,90 @@
+[MUSIC] Now that we understand how
+prototypal inheritance works, let's talk about another concept
+called scope inheritance. It's not common, nor is it a good practice
+to have one controller that handles everything in your page. It's much easier to code smaller pieces
+of functionality that are responsible for smaller parts of your page. As you know, document object model, or the DOM, is a tree of nested
+HTML elements and nodes. When you declare that
+a controller is responsible for part of your page, some natural
+nesting of controllers will occur. Therefore, the scope service, or simply the scope of the outer controller,
+is available to the inner controllers. However, Angular makes
+it even nicer than that. The scope of the inner controller
+prototypically inherits from the scope of the outer controller. Since you now know what
+prototypal inheritance means, you understand that the properties
+declared in the outer controller scope, Controller_1, in this case, are accessible
+to the inner controller scope, Controller_2 and 3,
+without any extra effort. That is, of course, if the inner
+controller doesn't mask those outer parent controller scope properties by declaring
+those same properties on its own scope. So if we declare a property called prop
+on the scope of the first controller, and make it equal to a string ctrl-1, to signify that it comes
+from the first controller. And then try to access that same property
+on the scope of the second controller and the third controller, which
+are inheriting from the Controller_1. The JavaScript engine will go
+up the prototype chain and will look up the value of
+the property in the first controller, which is going to be again, ctrl-1. But what would happen if first,
+inside of our Controller_2, we retrieve the prop value inherited
+from scope1, evaluate it somehow and then wanted to change it in such a way
+that both scope1's prop value and scope2's prop value would be identical? Better yet, we would want them
+pointing to the same memory location. However, without manually going
+up the prototype chain and retrieving the instance of scope1 object,
+we can't achieve this with primitive types, every time we
+set the prop property on scope2, we end up masking the prop property
+of scope1 from the view of scope2. So in this scenario,
+$scope1.prop would still be unchanged and be equal to that same ctrl-1. However, as you may remember from the
+previous video, when we're dealing with prototypically inherited objects,
+things work out very differently. The reason for this is that just to get
+to the property of the inherited object, we already have to walk
+up the prototype chain. So when we change the property of such an
+object, we're changing it at its original source, therefore all controllers reflect
+the change and no masking occurs. As you could see in this case, even
+though we changed the object's property prop through the reference of scope2,
+which is an inner controller scope, scope1, with the same object property
+prop changed its value as well. So you can see, it's very advantageous
+when we have scope inheritance to work with objects that are properties
+of the scope, and not with primitive properties that
+are directly sitting on the scope itself. And this is where controller as syntax,
+comes to help us quite a bit. The controller as syntax provides us with
+a very convenient object we can use to attach all of our properties to, so
+property masking does not get in the way, it let's us specify a label
+in our HTML template. The name of this label is attached to the
+corresponding scope service as a property. So in this case for the first controller,
+it's $scope.ctrl1 and for the second $scope.ctrl2. Those properties,
+in this case, ctrl1 and ctrl2, point to objects that are instances
+of the controllers themselves. In other words, the controller instance
+gets attached as a property on the $scope. That means, that when it comes to
+implementing the control function, or the function that is responsible
+to implement the functionality of our controller, we can attach our properties
+directly to the this keyword inside of our controller function and not even have to
+inject the $scope into the controller. So the this keyword becomes
+synonymous with the name of the label given in the controller
+as syntax in our HTML template. The reason we're able to accomplish
+all that without much code is because Angular does a lot for
+us behind the scenes. Here's about what it does, obviously, what Angular actually does
+is much more involved. So this is just a rough idea of
+what happens behind the scenes. So in our case,
+we have two nested controllers. The outer controller, Controller1,
+declared as ctrl1 and the inner controller,
+Controller2, declared as ctrl2. After AngularJS creates the scope for our
+Controller1, which we'll call $scope1 for now, AngularJS attaches a property
+called ctrl1, the same as our label, and then instatiates it using our controller
+function, as a function constructor. Which means ctrl1 is now equivalent to
+the this keyword inside of our function constructor represented by a function that
+we specified as our controller function. Since we're on prototypical inheritance,
+$scope2 which is the inner scope is going to get created based
+on $scope1, which is the outer scope. Then we're going to go through a similar
+process where we're going to create a property for scope2 with the name of the
+label that we assigned our Controller2 as, which is ctrl2. And we'll initialize it with
+the instance of the Controller2 function that is created
+using the new keyword, therefore, using Controller2
+function as a function constructor. So, yet again, the ctrl2 is going
+to be pointing to the same thing, that the this keyword will point to inside
+of the Controller2 function constructor. But things don't just get better and
+simpler inside of our JavaScript, the controller as syntax makes
+the HTML templates simpler as well. Not only does it allow me to access
+properties that are named the same from the parent scope without masking
+any properties, it also makes for a much more readable code. So now when I look at this interpolation,
+ctrl2.myProp, I know that this property is
+instantiated and belongs to Controller2. And ctrl1.myProp is a property
+that is instantiated on a Controller1 and
+that's where it belongs. Okay, enough hand waving for now,
+and in part four of this lecture, we're going to jump into the code editor
+and see these Angular concepts in action.
